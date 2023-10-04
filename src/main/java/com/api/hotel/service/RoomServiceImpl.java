@@ -85,10 +85,12 @@ public class RoomServiceImpl implements RoomService {
 		return null;
 	}
 
+	// test
 	@Override
 	public List<RoomTransition> getTransitionsByVisitorId(int id) {
 		try {
-			return transRepo.findRoomTransitionsByVisitorId(id);
+			List<RoomTransition> transitions = transRepo.findRoomTransitionsByVisitorId(id);
+			
 		}
 		catch (Exception e) {
 			System.out.println("getTransitionsByVisitorId : DB RETRIEVAL FAILED - " + e.getMessage());
