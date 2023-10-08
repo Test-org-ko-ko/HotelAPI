@@ -55,14 +55,9 @@ public class TransitionController {
 	
 	
 	// checkout
-	
-	
-	
-	// payment for checkout via payment service
-	
-	
-	
-	// rating/feedback 
+	// 1. validate if any fine
+	// 2. do the rest
+
 	
 	
 }

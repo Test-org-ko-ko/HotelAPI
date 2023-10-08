@@ -29,9 +29,8 @@ public class Email {
 	@Column(name = "attachments")
 	private String attachments;
 	
-	public Email() {
-		
-	}
+	public Email() {}
+
 	public Email(String recipient, String subject, String body, String attachments) {
 		this.recipient = recipient;
 		this.subject=subject;

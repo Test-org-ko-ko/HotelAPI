@@ -14,15 +14,8 @@ public class BookingController {
 	private RoomService roomService;
 	
 	// make booking
-	
-	
-	// update booking
-	
-	
-	// delete booking
-	
-	
-	// payment for booking via payment service
+	// create booking obj
+	// return to API consumer for redirecting to payment page
 	
 	
 }

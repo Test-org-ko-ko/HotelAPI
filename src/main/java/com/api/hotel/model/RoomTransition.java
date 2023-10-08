@@ -32,26 +32,25 @@ public class RoomTransition {
 	@Column(name = "visitor_id")
 	private int visitorId;
 	
-	@Column(name = "is_paid")
-	private String isPaid;
-	
 	@Column(name = "amount_paid")
 	private BigDecimal amountPaid;
-	
+
+	@Column(name = "booking_id")
+	private int bookingId;
+
 	@Transient
 	private Visitor visitor;
 
 	public RoomTransition() {}
 
-	public RoomTransition(LocalDate checkInDate, LocalDate checkOutDate, int roomId, 
-			int visitorId, String isPaid, BigDecimal amountPaid) {
-		
+	public RoomTransition(LocalDate checkInDate, LocalDate checkOutDate, int roomId, int visitorId, BigDecimal amountPaid, int bookingId, Visitor visitor) {
 		this.checkInDate = checkInDate;
 		this.checkOutDate = checkOutDate;
 		this.roomId = roomId;
 		this.visitorId = visitorId;
-		this.isPaid = isPaid;
 		this.amountPaid = amountPaid;
+		this.bookingId = bookingId;
+		this.visitor = visitor;
 	}
 
 	public int getRecordId() {
@@ -102,20 +101,20 @@ public class RoomTransition {
 		this.amountPaid = amountPaid;
 	}
 
-	public String getIsPaid() {
-		return isPaid;
-	}
-
-	public void setIsPaid(String isPaid) {
-		this.isPaid = isPaid;
-	}
-
 	public Visitor getVisitor() {
 		return visitor;
 	}
 
 	public void setVisitor(Visitor visitor) {
 		this.visitor = visitor;
+	}
+
+	public int getBookingId() {
+		return bookingId;
+	}
+
+	public void setBookingId(int bookingId) {
+		this.bookingId = bookingId;
 	}
 
 	@Override
@@ -137,11 +136,15 @@ public class RoomTransition {
 
 	@Override
 	public String toString() {
-		return "RoomTransition [id=" + id + ", checkInDate=" + checkInDate + ", checkOutDate=" + checkOutDate
-				+ ", roomId=" + roomId + ", visitorId=" + visitorId + ", isPaid=" + isPaid + ", amountPaid="
-				+ amountPaid + ", visitor=" + visitor + "]";
+		return "RoomTransition{" +
+				"id=" + id +
+				", checkInDate=" + checkInDate +
+				", checkOutDate=" + checkOutDate +
+				", roomId=" + roomId +
+				", visitorId=" + visitorId +
+				", amountPaid=" + amountPaid +
+				", bookingId=" + bookingId +
+				", visitor=" + visitor +
+				'}';
 	}
-	
-	
-
 }
