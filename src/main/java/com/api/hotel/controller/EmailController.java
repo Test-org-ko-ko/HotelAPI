@@ -16,9 +16,9 @@ import com.api.hotel.service.EmailService;
 public class EmailController {
 	@Autowired private EmailService emailService;
 	 
-    @PostMapping("/send/{mail}")
-    public String sendMail(@PathVariable String mail,@RequestBody Email emailDetails)
+    @PostMapping("/send/")
+    public String sendMail(@RequestBody Email emailDetails)
     {
-        return emailService.sendMail(mail, emailDetails);
+        return emailService.sendMail(emailDetails);
     }
 }

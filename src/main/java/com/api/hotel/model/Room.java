@@ -13,7 +13,7 @@ import jakarta.persistence.Id;
 public class Room {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
 	private String type;

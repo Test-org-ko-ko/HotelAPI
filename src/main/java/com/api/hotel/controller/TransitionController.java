@@ -3,10 +3,7 @@ package com.api.hotel.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.api.hotel.model.Room;
 import com.api.hotel.model.RoomTransition;
@@ -41,8 +38,15 @@ public class TransitionController {
 	public List<RoomTransition> getAllTransitions(@PathVariable(name = "id") int id) {
 		return roomService.getTransitionsByVisitorId(id);
 	}
-	
-	
+
+	@GetMapping("/findbydaterange/")
+	public List<RoomTransition> getAllTransitions(@RequestBody RoomTransition transition) {
+		if (transition == null || transition.getCheckInDate() == null || transition.getCheckOutDate() == null)
+			return null;
+
+		return roomService.getTransitionsByDateRange(transition);
+	}
+
 	// check in
 	public RoomTransition doCheckIn() {
 		// validate input

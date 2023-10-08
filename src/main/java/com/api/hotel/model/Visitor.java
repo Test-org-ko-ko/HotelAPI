@@ -11,7 +11,7 @@ import jakarta.persistence.Id;
 public class Visitor {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int visitorId;
 	
 	private String name;

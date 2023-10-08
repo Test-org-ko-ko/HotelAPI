@@ -1,35 +1,35 @@
 package com.api.hotel.service;
 
+import com.api.hotel.constant.Constant;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import com.api.hotel.model.Email;
 
-
-
 @Service
 public class EmailServiceImpl implements EmailService {
-	
+	private static final Logger LOG = LoggerFactory.getLogger(EmailServiceImpl.class);
 	@Autowired
 	private JavaMailSender javaMailSender;
-	@Value("$(spring.mail.username)")
-	private String fromMail;
+
 	@Override
-	public String sendMail(String mail, Email details) {
+	public String sendMail(Email details) {
 		try {	
-				SimpleMailMessage mailMessage = new SimpleMailMessage();
-				mailMessage.setFrom(fromMail);
-		        mailMessage.setTo(mail);
-		        mailMessage.setText(details.getBody());
-		        mailMessage.setSubject(details.getSubject());
-			    javaMailSender.send(mailMessage);
-			    return "Mail sent Successfully";
+			SimpleMailMessage mailMessage = new SimpleMailMessage();
+			mailMessage.setFrom(Constant.Email.EMAIL_FROM);
+			mailMessage.setTo(details.getRecipient());
+			mailMessage.setText(details.getBody());
+			mailMessage.setSubject(details.getSubject());
+			javaMailSender.send(mailMessage);
+			return Constant.Email.SUCCESS;
 			}
 		catch(Exception ex) {
-				return "Email was not sent!";
+			LOG.error(Constant.Email.FAILED + ex.getMessage(), ex);
+			return Constant.Email.FAILED;
 		}
 	}
 }

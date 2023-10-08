@@ -9,7 +9,7 @@ import java.util.Objects;
 public class Payment {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     private BigDecimal amount;

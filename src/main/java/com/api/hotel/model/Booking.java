@@ -6,11 +6,13 @@ import org.springframework.cglib.core.Local;
 import java.awt.print.Book;
 import java.time.LocalDate;
 import java.util.Objects;
+import java.util.UUID;
 
 @Entity
 public class Booking {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @Column(name = "booking_guest")
@@ -18,6 +20,11 @@ public class Booking {
 
     @Transient
     private String guest;
+
+    @Transient
+    private String email;
+    @Transient
+    private String phone;
 
     @Column(name = "check_in_date")
     private LocalDate checkInDate;
@@ -39,7 +46,8 @@ public class Booking {
 
     public Booking() {}
 
-    public Booking(String bookingGuest, String guest, LocalDate checkInDate, LocalDate checkOutDate, int roomId, String payNow, int paymentId, int emailId) {
+    public Booking(String bookingGuest, String guest, LocalDate checkInDate, LocalDate checkOutDate, int roomId, String payNow,
+                   int paymentId, int emailId, String email, String phone) {
         this.bookingGuest = bookingGuest;
         this.guest = guest;
         this.checkInDate = checkInDate;
@@ -48,6 +56,8 @@ public class Booking {
         this.payNow = payNow;
         this.paymentId = paymentId;
         this.emailId = emailId;
+        this.email = email;
+        this.phone = phone;
     }
 
     public int getId() {
@@ -122,6 +132,22 @@ public class Booking {
         this.emailId = emailId;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -140,6 +166,8 @@ public class Booking {
                 "id=" + id +
                 ", bookingGuest='" + bookingGuest + '\'' +
                 ", guest='" + guest + '\'' +
+                ", email='" + email + '\'' +
+                ", phone='" + phone + '\'' +
                 ", checkInDate=" + checkInDate +
                 ", checkOutDate=" + checkOutDate +
                 ", roomId=" + roomId +

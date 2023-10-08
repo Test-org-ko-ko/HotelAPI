@@ -4,7 +4,7 @@ import com.api.hotel.model.Email;
 
 public interface EmailService {
 
-	public String sendMail(String mail, Email email);
+	public String sendMail(Email email);
 
 	
 }

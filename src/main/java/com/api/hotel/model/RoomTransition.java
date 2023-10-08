@@ -17,7 +17,7 @@ import jakarta.persistence.Transient;
 public class RoomTransition {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
 	@Column(name = "check_in_date")
@@ -43,7 +43,8 @@ public class RoomTransition {
 
 	public RoomTransition() {}
 
-	public RoomTransition(LocalDate checkInDate, LocalDate checkOutDate, int roomId, int visitorId, BigDecimal amountPaid, int bookingId, Visitor visitor) {
+	public RoomTransition(LocalDate checkInDate, LocalDate checkOutDate, int roomId, int visitorId,
+						  BigDecimal amountPaid, int bookingId, Visitor visitor) {
 		this.checkInDate = checkInDate;
 		this.checkOutDate = checkOutDate;
 		this.roomId = roomId;
@@ -51,6 +52,15 @@ public class RoomTransition {
 		this.amountPaid = amountPaid;
 		this.bookingId = bookingId;
 		this.visitor = visitor;
+	}
+	public RoomTransition(LocalDate checkInDate, LocalDate checkOutDate, int roomId, int visitorId,
+						  BigDecimal amountPaid, int bookingId) {
+		this.checkInDate = checkInDate;
+		this.checkOutDate = checkOutDate;
+		this.roomId = roomId;
+		this.visitorId = visitorId;
+		this.amountPaid = amountPaid;
+		this.bookingId = bookingId;
 	}
 
 	public int getRecordId() {

@@ -4,12 +4,11 @@ import jakarta.persistence.*;
 
 import java.util.Objects;
 
-@Entity
-@Table(name = "Visitor_Fine")
+@Entity(name = "Visitor_Fine")
 public class VisitorFine {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     private String reason;
@@ -23,11 +22,27 @@ public class VisitorFine {
     @Column(name = "transition_id")
     private int transitionId;
 
+    @Transient
+    private String payerName;
+
+    @Transient
+    private String payerEmail;
+
+    public VisitorFine() {}
     public VisitorFine(String reason, int visitorId, int paymentId, int transitionId) {
         this.reason = reason;
         this.visitorId = visitorId;
         this.paymentId = paymentId;
         this.transitionId = transitionId;
+    }
+
+    public VisitorFine(String reason, int visitorId, int transitionId, String payerName,
+                       String payerEmail) {
+        this.reason = reason;
+        this.visitorId = visitorId;
+        this.transitionId = transitionId;
+        this.payerName = payerName;
+        this.payerEmail = payerEmail;
     }
 
     public int getId() {
@@ -70,6 +85,14 @@ public class VisitorFine {
         this.transitionId = transitionId;
     }
 
+    public String getPayerName() {
+        return payerName;
+    }
+
+    public String getPayerEmail() {
+        return payerEmail;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -90,6 +113,8 @@ public class VisitorFine {
                 ", visitorId=" + visitorId +
                 ", paymentId=" + paymentId +
                 ", transitionId=" + transitionId +
+                ", payer=" + payerName +
+                ", email=" + payerEmail +
                 '}';
     }
 }

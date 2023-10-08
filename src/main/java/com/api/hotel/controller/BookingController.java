@@ -1,5 +1,7 @@
 package com.api.hotel.controller;
 
+import com.api.hotel.model.Room;
+import com.api.hotel.model.RoomType;
 import com.api.hotel.repo.BookingRepo;
 import com.api.hotel.service.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,17 +21,20 @@ public class BookingController {
 	
 	@Autowired
 	private RoomService roomService;
-
 	@Autowired
 	private BookingRepo bookingRepo;
 	@Autowired
 	private BookingService bookingService;
-	// make booking
+
 	@PostMapping("/bookings")
 	public ResponseEntity<Booking> createBooking(@RequestBody Booking bookingDetails){
-		Booking createBooking = bookingService.createBooking(bookingDetails);
+		Booking createBooking = bookingService.createBooking(bookingDetails, new Room());
+		if (createBooking == null || createBooking.getId() == 0) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(createBooking);
+		}
 		return ResponseEntity.status(HttpStatus.CREATED).body(createBooking);
 	}
+
 	// update booking
 	
 	
