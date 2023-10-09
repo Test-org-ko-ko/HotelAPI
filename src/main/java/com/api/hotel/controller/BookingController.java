@@ -18,6 +18,7 @@ import com.api.hotel.model.Booking;
 import java.math.BigDecimal;
 import java.time.temporal.ChronoUnit;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/booking")
 public class BookingController {
