@@ -46,14 +46,18 @@ public class RoomServiceImpl implements RoomService {
 
 	@Override
 	public List<Room> getAllRooms() {
-		List<Room> rooms = new ArrayList<>();
 		try {
-			rooms = roomRepo.findAll();
+			List<Room> rooms = roomRepo.findAll();
+			if (rooms != null && rooms.size() > 0) {
+				return rooms.stream()
+						.filter(room -> room.isAvailable())
+						.toList();
+			}
 		}
 		catch (Exception e) {
 			LOG.error(Constant.DB_FAILED + e.getMessage(), e);
 		}
-		return rooms;
+		return null;
 	}
 
 	@Override
@@ -126,11 +130,9 @@ public class RoomServiceImpl implements RoomService {
 		try {
 			VisitorFine visitorFineCreated = visitorFineRepo.save(visitorFine);
 			return visitorFineCreated != null && visitorFineCreated.getVisitorId() != 0;
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			LOG.error(Constant.DB_FAILED + e.getMessage(), e);
 		}
 		return false;
 	}
-
 }

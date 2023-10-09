@@ -4,18 +4,17 @@ import com.api.hotel.Exception.ResourceNotFoundException;
 import com.api.hotel.constant.Constant;
 import com.api.hotel.model.*;
 import com.api.hotel.repo.BookingRepo;
-import com.api.hotel.repo.PaymentRepo;
 import com.api.hotel.repo.RoomTransitionRepo;
 import com.api.hotel.repo.VisitorRepo;
 import jakarta.persistence.PersistenceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 
 @Service
 public class BookingServiceImpl implements BookingService {
@@ -213,5 +212,25 @@ public class BookingServiceImpl implements BookingService {
             LOG.error(e.getMessage(), e);
         }
         return Constant.DB_UPDATE_FAILED;
+    }
+
+    @Override
+    public List<Booking> getAllBookings(boolean canceled) {
+        try {
+            List<Booking> bookings = bookingRepo.findAll();
+            if (bookings != null && bookings.size() > 0) {
+                if (!canceled) {
+                    return bookings.stream()
+                            .filter(booking -> !booking.isCanceled())
+                            .toList();
+                }
+
+                return bookings;
+            }
+        }
+        catch (Exception e) {
+            LOG.error(Constant.DB_FAILED + e.getMessage(), e);
+        }
+        return null;
     }
 }

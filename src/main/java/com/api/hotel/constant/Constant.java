@@ -40,7 +40,7 @@ public final class Constant {
 
     }
 
-    public static final String DB_FAILED = "DB RETRIEVAL FAILED";
-    public static final String DB_UPDATE_FAILED = "DB UPDATE FAILED";
+    public static final String DB_FAILED = "DB RETRIEVAL FAILED ";
+    public static final String DB_UPDATE_FAILED = "DB UPDATE FAILED ";
 
 }
