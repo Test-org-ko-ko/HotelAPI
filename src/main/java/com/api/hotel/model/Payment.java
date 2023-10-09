@@ -28,6 +28,10 @@ public class Payment {
         this.emailId = emailId;
     }
 
+    public void setAmount(BigDecimal amount) {
+        this.amount = amount;
+    }
+
     public int getId() {
         return id;
     }
