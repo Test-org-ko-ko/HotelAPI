@@ -1,5 +1,6 @@
 package com.api.hotel.service;
 
+import com.api.hotel.Exception.ResourceNotFoundException;
 import com.api.hotel.constant.Constant;
 import com.api.hotel.model.*;
 import com.api.hotel.repo.BookingRepo;
@@ -9,6 +10,7 @@ import com.api.hotel.repo.VisitorRepo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -105,5 +107,73 @@ public class BookingServiceImpl implements BookingService {
         }
 
         return new Booking();
+    }
+
+    @Override
+    public String updateBooking(Integer id, Booking bookingDetails) {
+        BigDecimal updatePriceToBePaid = null;
+        try {
+            Booking booking = bookingRepo.findById(id)
+                    .orElseThrow(() -> new ResourceNotFoundException("Booking not exist with id : " + id));
+            booking.setCheckInDate(bookingDetails.getCheckInDate());
+            booking.setCheckOutDate(bookingDetails.getCheckOutDate());
+            booking.setRoomId(bookingDetails.getRoomId());
+            Booking updateBooking = bookingRepo.save(booking);
+            if (updateBooking.getId() == 0)
+                throw new Exception(Constant.Booking.FAILED);
+
+            BigDecimal pricePerDay = BigDecimal.valueOf(200); //room.getPrice();
+            long days = ChronoUnit.DAYS.between(bookingDetails.getCheckInDate(), bookingDetails.getCheckOutDate());
+            updatePriceToBePaid = pricePerDay.multiply(BigDecimal.valueOf(days));
+            Payment paymentUpdated = paymentService.updatePayment(updateBooking.getPaymentId(),updatePriceToBePaid);
+            if (paymentUpdated.getId() == 0)
+                throw new Exception(Constant.Payment.FAILED);
+
+
+            String guestName = null;
+            if (bookingDetails.getGuest() != null && !bookingDetails.getGuest().isBlank()) {
+                guestName = bookingDetails.getGuest();
+            }
+            else {
+                guestName = bookingDetails.getBookingGuest();
+            }
+            //System.out.println("Guest Name " + guestName + ", id: " +bookingDetails.getId() + ", email: " + bookingDetails.getEmail());
+            StringBuilder emailBookingBody = new StringBuilder("Hi ");
+            emailBookingBody.append(guestName);
+            emailBookingBody.append(",");
+            emailBookingBody.append("\n");
+            emailBookingBody.append("Your booking is modified.\n");
+            emailBookingBody.append("Booking ID: ");
+            emailBookingBody.append(bookingDetails.getId());
+            emailBookingBody.append("\n");
+            emailBookingBody.append("Hope to see you soon.\n");
+            emailBookingBody.append("Hotel Planet");
+            String bookingEmailStatus = emailService.sendMail(new Email(bookingDetails.getEmail(), Constant.Booking.SUBJECTUPDATE,
+                    emailBookingBody.toString(), null));
+            if (Constant.Email.FAILED.equals(bookingEmailStatus))
+                throw new Exception(Constant.Email.FAILED);
+
+            StringBuilder emailPaymentBody = new StringBuilder("Hi ");
+            emailPaymentBody.append(guestName);
+            emailPaymentBody.append(",");
+            emailPaymentBody.append("\n");
+            emailPaymentBody.append("Your Payment is received.\n");
+            emailPaymentBody.append("Updated Amount Paid: ");
+            emailPaymentBody.append(updatePriceToBePaid);
+            emailPaymentBody.append("\n");
+            emailPaymentBody.append("Hope to see you soon.\n");
+            emailPaymentBody.append("Hotel Planet");
+            String paymentEmailStatus = emailService.sendMail(new Email(bookingDetails.getEmail(), Constant.Payment.SUBJECT,
+                    emailPaymentBody.toString(), null));
+            if (Constant.Email.FAILED.equals(paymentEmailStatus))
+                throw new Exception(Constant.Email.FAILED);
+
+            return Constant.Booking.UPDATESUCCESS;
+
+        }
+        catch(Exception ex){
+            LOG.error(ex.getMessage(), ex);
+        }
+        return Constant.DB_FAILED;
     }
 }
