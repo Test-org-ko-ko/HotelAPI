@@ -24,11 +24,11 @@ public class Room {
 	private int roomNumber;
 	
 	@Column(name = "is_available")
-	private String isAvailable;
+	private boolean isAvailable;
 	
 	public Room() {}
 	
-	public Room(String type, BigDecimal price, int roomNumber, String isAvailable) {
+	public Room(String type, BigDecimal price, int roomNumber, boolean isAvailable) {
 		this.type = type;
 		this.price = price;
 		this.roomNumber = roomNumber;
@@ -59,10 +59,10 @@ public class Room {
 	public void setRoomNumber(int roomNumber) {
 		this.roomNumber = roomNumber;
 	}
-	public String isAvailable() {
+	public boolean isAvailable() {
 		return isAvailable;
 	}
-	public void setAvailable(String isAvailable) {
+	public void setAvailable(boolean isAvailable) {
 		this.isAvailable = isAvailable;
 	}
 

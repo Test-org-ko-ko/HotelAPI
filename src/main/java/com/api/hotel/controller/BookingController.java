@@ -17,6 +17,7 @@ import com.api.hotel.model.Booking;
 
 import java.math.BigDecimal;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 
 @RestController
 @RequestMapping("/booking")
@@ -29,7 +30,7 @@ public class BookingController {
 	@Autowired
 	private BookingService bookingService;
 
-	@PostMapping("/bookings")
+	@PostMapping("/create")
 	public ResponseEntity<Booking> createBooking(@RequestBody Booking bookingDetails){
 		Booking createBooking = bookingService.createBooking(bookingDetails, new Room());
 		if (createBooking == null || createBooking.getId() == 0) {
@@ -58,6 +59,13 @@ public class BookingController {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(cancelBookingStatus);
 		}
 		return ResponseEntity.status(HttpStatus.OK).body(cancelBookingStatus);
+	}
+
+	@GetMapping("/find/{canceled}")
+	public ResponseEntity<List<Booking>> getBooking(@PathVariable boolean canceled) {
+		return ResponseEntity.status(HttpStatus.OK).body(
+				bookingService.getAllBookings(canceled)
+		);
 	}
 	
 }
