@@ -1,5 +1,7 @@
 package com.api.hotel.service;
 
+import com.api.hotel.Exception.ResourceNotFoundException;
+import com.api.hotel.model.Booking;
 import com.api.hotel.model.Payment;
 import com.api.hotel.repo.PaymentRepo;
 import org.slf4j.Logger;
@@ -26,6 +28,20 @@ public class PaymentServiceImpl implements PaymentService {
     @Override
     public Payment makeFinePayment(String reason, BigDecimal amount) {
         return pay(reason, amount);
+    }
+
+    @Override
+    public Payment updatePayment(Integer paymentId, BigDecimal amount){
+        Payment payment = paymentRepo.findById(paymentId)
+                .orElseThrow(() -> new ResourceNotFoundException("Payment not exist with id : " + paymentId));
+        payment.setAmount(amount);
+        try {
+            return paymentRepo.save(payment);
+        }
+        catch (Exception e) {
+            LOG.error(Constant.DB_FAILED + e.getMessage(), e);
+        }
+        return null;
     }
 
     private Payment pay(String reason, BigDecimal amount) {
