@@ -23,6 +23,7 @@ public class Booking {
 
     @Transient
     private String email;
+
     @Transient
     private String phone;
 
@@ -44,6 +45,7 @@ public class Booking {
     @Column(name = "email_id")
     private int emailId;
 
+    private boolean canceled;
     public Booking() {}
 
     public Booking(String bookingGuest, String guest, LocalDate checkInDate, LocalDate checkOutDate, int roomId, String payNow,
@@ -148,6 +150,14 @@ public class Booking {
         this.phone = phone;
     }
 
+    public boolean isCanceled() {
+        return canceled;
+    }
+
+    public void setCanceled(boolean canceled) {
+        this.canceled = canceled;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -174,6 +184,7 @@ public class Booking {
                 ", payNow='" + payNow + '\'' +
                 ", paymentId=" + paymentId +
                 ", emailId=" + emailId +
+                ", isCanceled=" + canceled +
                 '}';
     }
 }

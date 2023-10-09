@@ -42,20 +42,22 @@ public class BookingController {
 	// 1. update checkInDate, checkOutDate, RoomId
 	// 2. update amountpaid in payment
 	// 3. send email for successful update
-	@PutMapping("bookings/{id}")
-	public ResponseEntity<String> updateBooking(@PathVariable Integer id, @RequestBody Booking bookingDetails){
-		String updateBookingStatus = bookingService.updateBooking(id,bookingDetails);
-		if (!updateBookingStatus.equals(Constant.Booking.UPDATESUCCESS)) {
+	@PutMapping("/update")
+	public ResponseEntity<String> updateBooking(@RequestBody Booking bookingDetails){
+		String updateBookingStatus = bookingService.updateBooking(bookingDetails);
+		if (!Constant.Booking.UPDATE_SUCCESS.equals(updateBookingStatus)) {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(updateBookingStatus);
 		}
 		return ResponseEntity.status(HttpStatus.OK).body(updateBookingStatus);
 	}
-	
-	
-	// delete booking
-	
-	
-	// payment for booking via payment service
-	
+
+	@DeleteMapping("/cancel/{id}")
+	public ResponseEntity<String> cancelBooking(@PathVariable Integer id) {
+		String cancelBookingStatus = bookingService.cancelBooking(id);
+		if (!Constant.Booking.UPDATE_SUCCESS.equals(cancelBookingStatus)) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(cancelBookingStatus);
+		}
+		return ResponseEntity.status(HttpStatus.OK).body(cancelBookingStatus);
+	}
 	
 }
