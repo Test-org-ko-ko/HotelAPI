@@ -1,5 +1,7 @@
 package com.api.hotel.controller;
 
+import com.api.hotel.Exception.ResourceNotFoundException;
+import com.api.hotel.constant.Constant;
 import com.api.hotel.model.Room;
 import com.api.hotel.model.RoomType;
 import com.api.hotel.repo.BookingRepo;
@@ -8,13 +10,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.api.hotel.service.RoomService;
 import com.api.hotel.model.Booking;
+
+import java.math.BigDecimal;
+import java.time.temporal.ChronoUnit;
+
 @RestController
 @RequestMapping("/booking")
 public class BookingController {
@@ -36,6 +39,17 @@ public class BookingController {
 	}
 
 	// update booking
+	// 1. update checkInDate, checkOutDate, RoomId
+	// 2. update amountpaid in payment
+	// 3. send email for successful update
+	@PutMapping("bookings/{id}")
+	public ResponseEntity<String> updateBooking(@PathVariable Integer id, @RequestBody Booking bookingDetails){
+		String updateBookingStatus = bookingService.updateBooking(id,bookingDetails);
+		if (!updateBookingStatus.equals(Constant.Booking.UPDATESUCCESS)) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(updateBookingStatus);
+		}
+		return ResponseEntity.status(HttpStatus.OK).body(updateBookingStatus);
+	}
 	
 	
 	// delete booking
