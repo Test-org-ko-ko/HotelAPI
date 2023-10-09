@@ -7,4 +7,6 @@ import org.springframework.stereotype.Service;
 
 public interface BookingService {
     public Booking createBooking(Booking bookingDetails, Room room);
+
+    public String updateBooking(Integer id, Booking bookingDetails);
 }
