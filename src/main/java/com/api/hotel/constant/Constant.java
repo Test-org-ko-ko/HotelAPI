@@ -23,6 +23,10 @@ public final class Constant {
         public  static  final String SUCCESS = "Booking creation success";
         public  static  final String FAILED = "Booking creation failed";
         public  static  final String SUBJECT = "Booking Confirmation";
+
+        public static final String SUBJECTUPDATE = "Booking Update Confirmation";
+
+        public static final String UPDATESUCCESS = "Booking update success";
     }
 
     public class RoomTransition {
