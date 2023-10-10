@@ -37,6 +37,7 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public Booking createBooking(Booking bookingDetails, Room room) {
         BigDecimal amountPaid = null;
+        String paymentStatus ="";
         try {
             BigDecimal pricePerDay = BigDecimal.valueOf(100); //room.getPrice();
             long days = ChronoUnit.DAYS.between(bookingDetails.getCheckInDate(), bookingDetails.getCheckOutDate());
@@ -44,6 +45,7 @@ public class BookingServiceImpl implements BookingService {
             String paymentMsg = paymentService.makePayment(Constant.PaymentReason.BOOKING, amountPaid);
 
             if (Constant.Payment.SUCCESS.equals(paymentMsg)) {
+                paymentStatus = Constant.Payment.SUCCESS;
                 String guestName = null;
                 if (bookingDetails.getGuest() != null && !bookingDetails.getGuest().isBlank()) {
                     guestName = bookingDetails.getGuest();
@@ -57,6 +59,7 @@ public class BookingServiceImpl implements BookingService {
                 if (visitor == null || visitor.getVisitorId() == 0)
                     throw new Exception(Constant.Visitor.FAILED);
 
+                bookingDetails.setPaymentStatus(paymentStatus);
                 Booking booking = bookingRepo.save(bookingDetails);
                 if (booking == null || booking.getId() == 0)
                     throw new Exception(Constant.Booking.FAILED);
@@ -217,6 +220,7 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public List<Booking> getAllBookings(boolean canceled) {
         try {
+            System.out.println("in service...");
             List<Booking> bookings = bookingRepo.findAll();
             if (bookings != null && bookings.size() > 0) {
                 if (!canceled) {
@@ -225,6 +229,7 @@ public class BookingServiceImpl implements BookingService {
                             .toList();
                 }
 
+                System.out.println("bookings " + bookings);
                 return bookings;
             }
         }
