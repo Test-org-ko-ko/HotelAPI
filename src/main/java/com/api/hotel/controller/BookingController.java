@@ -19,8 +19,9 @@ import java.math.BigDecimal;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
-@CrossOrigin
+
 @RestController
+@CrossOrigin("http://localhost:5173/")
 @RequestMapping("/booking")
 public class BookingController {
 	
@@ -64,6 +65,7 @@ public class BookingController {
 
 	@GetMapping("/find/{canceled}")
 	public ResponseEntity<List<Booking>> getBooking(@PathVariable boolean canceled) {
+		System.out.println("in..." + canceled);
 		return ResponseEntity.status(HttpStatus.OK).body(
 				bookingService.getAllBookings(canceled)
 		);
