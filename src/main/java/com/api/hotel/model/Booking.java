@@ -18,14 +18,18 @@ public class Booking {
     @Column(name = "booking_guest")
     private String bookingGuest;
 
-    @Transient
+    @Column(name = "guest")
     private String guest;
 
-    @Transient
+    @Column(name = "email")
     private String email;
 
-    @Transient
+    @Column(name = "phone")
     private String phone;
+
+    @Column(name = "payment_status")
+    private String paymentStatus;
+
 
     @Column(name = "check_in_date")
     private LocalDate checkInDate;
@@ -60,6 +64,14 @@ public class Booking {
         this.emailId = emailId;
         this.email = email;
         this.phone = phone;
+    }
+
+    public String getPaymentStatus() {
+        return paymentStatus;
+    }
+
+    public void setPaymentStatus(String paymentStatus) {
+        this.paymentStatus = paymentStatus;
     }
 
     public int getId() {
@@ -183,6 +195,7 @@ public class Booking {
                 ", roomId=" + roomId +
                 ", payNow='" + payNow + '\'' +
                 ", paymentId=" + paymentId +
+                ", paymentStatus="   + paymentStatus +
                 ", emailId=" + emailId +
                 ", isCanceled=" + canceled +
                 '}';
