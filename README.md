@@ -6,7 +6,7 @@ Team size	: 2\
 Members	: Wint Nandar Lwin, Chit Ko Ko\
 Skills		: Java, Springboot, JWT, Rest API, MySQL, Github, Postman\
 Project Type	: Side Project [Not associated with school]\
-Duration	: 1 month\
+Duration	: 2 months\
 Phases		: Project idea, Designing API, Set-up, Coding, Manual Testing with Postman
 
 ## Folders
